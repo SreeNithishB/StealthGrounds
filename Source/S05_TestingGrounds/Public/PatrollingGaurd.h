@@ -17,6 +17,8 @@ class S05_TESTINGGROUNDS_API APatrollingGaurd : public ATP_ThirdPersonCharacter
 {
 	GENERATED_BODY()
 
+public: 
+	// TODO Get PatrolPointsCPP out of public and create a getter
 	UPROPERTY(EditInstanceOnly, Category = "Patrol Routes")
 	TArray<AActor*> PatrolPointsCPP;
 	
