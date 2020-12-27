@@ -39,12 +39,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimInstance* AnimInstance;
 
+	/** Fires a projectile. */
+	void OnFire();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	/** Fires a projectile. */
-	void OnFire();
+
 
 public:	
 	// Called every frame

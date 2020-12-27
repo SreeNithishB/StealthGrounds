@@ -88,7 +88,7 @@ void AS05_TestingGroundsCharacter::BeginPlay()
 	}
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
 	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-
+	Gun->AnimInstance = Mesh1P->GetAnimInstance();
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
 	{
@@ -100,6 +100,10 @@ void AS05_TestingGroundsCharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+	// Bind fire event
+	InputComponent->BindAction("Fire", IE_Pressed, Gun, &AGun::OnFire);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,7 +119,7 @@ void AS05_TestingGroundsCharacter::SetupPlayerInputComponent(class UInputCompone
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AS05_TestingGroundsCharacter::OnFire);
+	//PlayerInputComponent->BindAction("Fire", IE_Pressed, Gun, &AGun::OnFire);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
