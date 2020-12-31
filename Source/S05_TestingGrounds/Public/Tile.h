@@ -12,7 +12,7 @@ class S05_TESTINGGROUNDS_API ATile : public AActor
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn);
+	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.0);
 	
 public:	
 	// Sets default values for this actor's properties
@@ -27,6 +27,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	bool CastSphere(FVector Location, float Radius);
+	bool FindEmptyLocation(FVector& OutLocation, float Radius);
+	void PlaceActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint);
+	bool CanSpawnAtLocation(FVector Location, float Radius);
 
 };
