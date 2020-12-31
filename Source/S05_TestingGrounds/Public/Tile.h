@@ -12,7 +12,7 @@ class S05_TESTINGGROUNDS_API ATile : public AActor
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void PlaceActors();
+	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn);
 	
 public:	
 	// Sets default values for this actor's properties
