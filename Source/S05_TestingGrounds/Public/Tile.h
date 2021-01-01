@@ -12,7 +12,7 @@ class S05_TESTINGGROUNDS_API ATile : public AActor
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.0);
+	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500.0, float MinScale = 1, float MaxScale = 1);
 	
 public:	
 	// Sets default values for this actor's properties
@@ -28,7 +28,7 @@ public:
 
 private:
 	bool FindEmptyLocation(FVector& OutLocation, float Radius);
-	void PlaceActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint);
+	void PlaceActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Rotation, float Scale);
 	bool CanSpawnAtLocation(FVector Location, float Radius);
 
 };
