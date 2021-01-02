@@ -27,6 +27,11 @@ void ATile::Tick(float DeltaTime)
 
 }
 
+void ATile::SetPool(UActorPool* InPool)
+{
+	Pool = InPool;
+}
+
 void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale)
 {
 
