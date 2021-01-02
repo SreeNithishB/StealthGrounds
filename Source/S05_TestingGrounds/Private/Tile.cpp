@@ -28,8 +28,11 @@ void ATile::BeginPlay()
 void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	//Super::EndPlay(EndPlayReason);
+	if (Pool != nullptr && NavMeshBoundsVolume != nullptr) 
+	{ 
+		Pool->Return(NavMeshBoundsVolume);
+	}
 	
-	Pool->Return(NavMeshBoundsVolume);
 
 }
 
@@ -52,10 +55,10 @@ void ATile::PositionNavMeshBoundsVolume()
 	NavMeshBoundsVolume = Pool->Checkout();
 	if (NavMeshBoundsVolume == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("[%s] Not Enough Actors in pool"), *GetName());
+		//UE_LOG(LogTemp, Error, TEXT("[%s] Not Enough Actors in pool"), *GetName());
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Checked Out: %s"), *GetName(), *NavMeshBoundsVolume->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("[%s] Checked Out: %s"), *GetName(), *NavMeshBoundsVolume->GetName());
 	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
 	FNavigationSystem::Build(*GetWorld());
 }
@@ -102,10 +105,10 @@ void ATile::PlaceAIPawns(TSubclassOf<APawn> ToSpawn, int MinSpawn, int MaxSpawn,
 
 void ATile::PlaceAIPawn(TSubclassOf<APawn> ToSpawn, FSpawnPosition SpawnPosition)
 {
-	APawn* Pawn = GetWorld()->SpawnActor<APawn>(ToSpawn);
-	Pawn->SetActorRelativeLocation(SpawnPosition.SpawnPoint);
+	FRotator Rotation = FRotator(0, SpawnPosition.Rotation, 0);
+	APawn* Pawn = GetWorld()->SpawnActor<APawn>(ToSpawn, SpawnPosition.SpawnPoint, Rotation);
+	if (Pawn == nullptr) { return; }
 	Pawn->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-	Pawn->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
 	Pawn->Tags.Add(FName("Enemy"));
 	Pawn->SpawnDefaultController();
 }
@@ -128,6 +131,7 @@ bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
 void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition& SpawnPosition)
 {
 	AActor* Spawned = GetWorld()->SpawnActor<AActor>(ToSpawn);
+	if (Spawned == nullptr) { return; }
 	Spawned->SetActorRelativeLocation(SpawnPosition.SpawnPoint);
 	Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 	Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
